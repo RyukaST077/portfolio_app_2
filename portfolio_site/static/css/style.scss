@@ -1,0 +1,104 @@
+img {
+    width: 100%;
+}
+
+body {
+    position: relative;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+.bg-img {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    background-image: url('../images/top_img.JPG');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+
+    .bg-cover {
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 10vh;
+    background-color: white;
+
+    .header-nav {
+        ul {
+            display: flex;
+
+            li {
+                margin-left: 20px;
+
+                a {
+                    text-decoration: none;
+                    color: black;
+
+                    :hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.top-content {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+
+    .top-text {
+
+        width: 100%;
+        height: 100%;
+        padding: 2.5rem;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+}
+
+.about-me {
+    width: 100%;
+    border-radius: 3rem 3rem 0 0;
+    background-color: white;
+
+    .about-me-text {
+        padding: 2.5rem;
+
+    }
+}
+
+.works {
+    width: 100%;
+    height: 100vh;
+    margin-bottom: 100vh;
+    background-color: white;
+    border-radius: 0 0 3rem 3rem;
+
+    .works-text {
+        padding: 2.5rem;
+    }
+}

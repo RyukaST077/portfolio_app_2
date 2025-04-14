@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/reboot.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vender/original_bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vender/top_gimic.css' %}">
+</head>
+
+<body>
+    <div class="bg-img">
+        <div class="bg-cover"></div>
+    </div>
+    <header class="header">
+        <h1>Portfolio</h1>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Portfolio</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="top-content container">
+        <div class="top-text">
+            <div class="text">
+                <h2>Hello World!<br>This is my Portfolio</h2>
+                <p>Here you can find my projects and skills.</p>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="about-me">
+        <div class="about-me-text container">
+            <h2>About Me</h2>
+            <p>皆さん初めましてエンジニアのRyuです。</p>
+            <p>私はエンジニアとしてのキャリアをスタートしたばかりですが、常に新しい技術を学び、成長することに情熱を持っています。</p>
+            <p>私のポートフォリオでは、私が取り組んできたプロジェクトやスキルを紹介しています。</p>
+        </div>
+
+    </div>
+
+    <div class="works">
+        <div class="works-text container">
+            <h2>Works</h2>
+            <p>私が取り組んできたプロジェクトやスキルを紹介します。</p>
+        </div>
+    </div>
+</body>
+
+</html>
