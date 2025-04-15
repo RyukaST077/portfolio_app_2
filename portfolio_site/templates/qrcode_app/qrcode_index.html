@@ -1,0 +1,404 @@
+{% extends '../base.html' %}
+
+{% block original_style %}
+<style>
+    /* --- メインコンテンツエリア --- */
+    .main-container {
+        max-width: 760px;
+        /* コンテンツの最大幅 */
+        margin: 2.5rem auto;
+        /* 上下左右のマージン、中央揃え */
+        padding: 2rem;
+        /* 内側のパディング */
+        background-color: #ffffff;
+        /* 白背景 */
+        border-radius: 8px;
+        /* 角丸 */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        /* 少し濃い影 */
+        text-align: center;
+        /* コンテンツを中央揃え */
+    }
+
+    .main-container h1 {
+        /* ページタイトル */
+        color: #343a40;
+        /* タイトルの色 */
+        margin-bottom: 2rem;
+        /* タイトル下のマージン */
+        font-size: 2rem;
+        /* タイトルサイズ */
+        font-weight: 600;
+    }
+
+    /* --- フォームスタイル --- */
+    #generateForm {
+        margin-bottom: 2.5rem;
+        /* フォームと結果表示の間隔 */
+    }
+
+    #generateForm label {
+        display: block;
+        /* ラベルをブロック要素に */
+        margin-bottom: 0.75rem;
+        /* ラベルと入力欄の間隔 */
+        font-weight: 500;
+        /* 少し太字 */
+        color: #495057;
+        /* ラベルの色 */
+        text-align: left;
+        /* ラベルは左揃え */
+        max-width: 500px;
+        /* 最大幅 */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .form-input-wrapper {
+        /* 入力欄とボタンのラッパー */
+        display: flex;
+        gap: 0.5rem;
+        /* 要素間の隙間 */
+        max-width: 500px;
+        /* 最大幅 */
+        margin: 0 auto;
+        /* 中央揃え */
+        flex-wrap: wrap;
+        /* 折り返しを許可 */
+    }
+
+    #urlInput {
+        flex-grow: 1;
+        /* 利用可能なスペースを占める */
+        padding: 0.75rem 1rem;
+        /* パディング調整 */
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        /* ボーダー */
+        border-radius: 4px;
+        /* 角丸 */
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        box-sizing: border-box;
+        /* paddingを含めて幅計算 */
+        min-width: 200px;
+        /* 最小幅 */
+    }
+
+    #urlInput:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        /* フォーカス時の影 */
+    }
+
+    #urlInput::placeholder {
+        color: #6c757d;
+        opacity: 1;
+    }
+
+    #generateBtn {
+        padding: 0.75rem 1.5rem;
+        /* ボタンのパディング */
+        font-size: 1rem;
+        font-weight: 500;
+        color: #fff;
+        background-color: #007bff;
+        /* ボタン背景色 */
+        border: 1px solid #007bff;
+        border-radius: 4px;
+        /* 角丸 */
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+        white-space: nowrap;
+        /* ボタンテキストが改行しないように */
+    }
+
+    #generateBtn:hover,
+    #generateBtn:focus {
+        background-color: #0056b3;
+        /* ホバー時の色 */
+        border-color: #0056b3;
+        outline: none;
+    }
+
+    #generateBtn:disabled {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+
+    /* --- 結果表示エリア --- */
+    #result {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+        /* 結果エリアの背景色 */
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+        /* 軽いボーダー */
+        min-height: 280px;
+        /* 結果表示の最低高さを確保 */
+        display: flex;
+        flex-direction: column;
+        /* 縦方向に要素を配置 */
+        align-items: center;
+        /* 中央揃え */
+        justify-content: center;
+        /* 中央揃え */
+    }
+
+    #loading {
+        display: none;
+        /* 初期状態は非表示 */
+        color: #5a6268;
+        font-style: italic;
+        margin-bottom: 1rem;
+    }
+
+    #error {
+        display: none;
+        /* 初期状態は非表示 */
+        color: #721c24;
+        /* エラーテキスト色 */
+        background-color: #f8d7da;
+        /* エラー背景色 */
+        border: 1px solid #f5c6cb;
+        /* エラーボーダー色 */
+        padding: 0.75rem 1.25rem;
+        /* パディング */
+        margin-bottom: 1rem;
+        /* 下マージン */
+        border-radius: 4px;
+        /* 角丸 */
+        width: 90%;
+        /* 幅 */
+        max-width: 450px;
+        box-sizing: border-box;
+    }
+
+    #generatedImage {
+        display: none;
+        /* 初期状態は非表示 */
+        max-width: 100%;
+        width: 220px;
+        /* QRコード画像サイズ */
+        height: auto;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+        /* 画像とリンクの間隔 */
+        border: 1px solid #dee2e6;
+        /* 画像ボーダー */
+        padding: 5px;
+        /* 画像周りの余白 */
+        background-color: #fff;
+        /* 画像背景 */
+    }
+
+    #downloadLink {
+        display: none;
+        /* 初期状態は非表示 */
+        margin-top: 1rem;
+        padding: 0.6rem 1.2rem;
+        background-color: #28a745;
+        /* ダウンロードボタンの色 */
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+        border: 1px solid #28a745;
+    }
+
+    #downloadLink:hover,
+    #downloadLink:focus {
+        background-color: #218838;
+        /* ホバー時の色 */
+        border-color: #1e7e34;
+        outline: none;
+    }
+
+    /* --- レスポンシブ対応 --- */
+    @media (max-width: 768px) {
+        .header {
+            padding: 1rem;
+            flex-direction: column;
+            /* ヘッダー項目を縦並び */
+            gap: 0.5rem;
+        }
+
+        .header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .main-container {
+            margin: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .main-container h1 {
+            font-size: 1.75rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .main-container h1 {
+            font-size: 1.5rem;
+        }
+
+        .form-input-wrapper {
+            flex-direction: column;
+            /* 狭い画面では入力欄とボタンを縦並び */
+            align-items: stretch;
+            /* 幅を親要素に合わせる */
+        }
+
+        #urlInput {
+            margin-bottom: 0.5rem;
+            /* ボタンとの間隔 */
+            min-width: auto;
+            /* 最小幅解除 */
+        }
+
+        #generateBtn {
+            width: 100%;
+            /* ボタン幅を100%に */
+        }
+
+        #generatedImage {
+            width: 180px;
+            /* 画像サイズを少し小さく */
+        }
+
+        #error {
+            width: 95%;
+        }
+
+        #result {
+            min-height: 250px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<main class="main-container">
+    <h1>QRコード生成</h1>
+
+    <form id="generateForm">
+        {% csrf_token %}
+        {# ラベルをフォーム要素の外側に配置 #}
+        <label for="urlInput">変換したいURL:</label>
+        <div class="form-input-wrapper"> {# 入力欄とボタンをグループ化 #}
+            <input type="url" id="urlInput" name="url_input" required placeholder="https://example.com">
+            <button type="submit" id="generateBtn">QRコード生成</button>
+        </div>
+    </form>
+
+    {# 結果表示エリア #}
+    <div id="result">
+        <p id="loading">画像を生成中です...</p>
+        {# エラーメッセージは専用のコンテナで表示 #}
+        <div id="error"></div>
+        {# 画像とダウンロードリンク #}
+        <img id="generatedImage" src="" alt="生成されたQRコード">
+        <a href="#" id="downloadLink" download="qrcode.png">画像をダウンロード</a>
+    </div>
+</main>
+
+<script>
+    const form = document.getElementById('generateForm');
+    const generateBtn = document.getElementById('generateBtn');
+    const loadingIndicator = document.getElementById('loading');
+    const errorDisplay = document.getElementById('error');
+    const generatedImage = document.getElementById('generatedImage');
+    // ★ ダウンロードリンク要素を取得
+    const downloadLink = document.getElementById('downloadLink');
+
+    const csrfToken = form.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // 状態リセット (ダウンロードリンクも非表示に)
+        loadingIndicator.style.display = 'block';
+        errorDisplay.style.display = 'none';
+        errorDisplay.textContent = '';
+        generatedImage.style.display = 'none';
+        generatedImage.src = '';
+        // ★ ダウンロードリンクもリセット
+        downloadLink.style.display = 'none';
+        downloadLink.href = '#'; // hrefをリセット
+        // downloadLink.removeAttribute('download'); // 必要ならdownload属性もリセット
+
+        if (generateBtn) {
+            generateBtn.disabled = true;
+        }
+
+        const formData = new FormData(form);
+
+        fetch("{% url 'qrcode_app:generate_qrcode_ajax' %}", { // URLを確認
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        let errorMsg = `サーバーエラー (${response.status})`;
+                        try {
+                            const errData = JSON.parse(text);
+                            errorMsg = errData.error || text || errorMsg;
+                        } catch (e) { errorMsg = text || errorMsg; }
+                        throw new Error(errorMsg);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                loadingIndicator.style.display = 'none';
+
+                if (data.success && data.image_url) {
+                    // 成功：画像を表示
+                    generatedImage.src = data.image_url;
+                    generatedImage.style.display = 'block';
+
+                    // ★ ダウンロードリンクを設定して表示
+                    downloadLink.href = data.image_url;
+                    // ★ download属性にファイル名を設定 (サーバーから返されたファイル名を利用する例)
+                    //    data.image_url が /media/qrcodes/qr_xxxx.png のような形式を想定
+                    const filename = data.image_url.split('/').pop(); // URLの最後の部分を取得
+                    if (filename) {
+                        downloadLink.download = filename; // 例: qr_xxxxxxxx-xxxx_xxxxxxx.png
+                    } else {
+                        downloadLink.download = 'qrcode.png'; // フォールバック
+                    }
+                    downloadLink.style.display = 'inline-block'; // 表示 (inline-block でボタン風に見せる)
+
+                } else {
+                    // 失敗：エラーメッセージ表示 (ダウンロードリンクは非表示のまま)
+                    errorDisplay.textContent = data.error || 'QRコードの生成に失敗しました。';
+                    errorDisplay.style.display = 'block';
+                    console.error('QR code generation failed:', data.error);
+                }
+            })
+            .catch(error => {
+                // エラー時 (ダウンロードリンクは非表示のまま)
+                loadingIndicator.style.display = 'none';
+                errorDisplay.textContent = `リクエストエラー: ${error.message}`;
+                errorDisplay.style.display = 'block';
+                console.error('Fetch error:', error);
+            })
+            .finally(() => {
+                if (generateBtn) {
+                    generateBtn.disabled = false;
+                }
+            });
+    });
+</script>
+{% endblock %}
