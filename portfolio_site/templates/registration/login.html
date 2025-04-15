@@ -1,0 +1,51 @@
+{# templates/registration/login.html #}
+{% extends '../base.html' %} {# もしプロジェクト共通のベーステンプレートがあれば継承 #}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  {% if form.errors %}
+    <p style="color: red;">ユーザー名またはパスワードが正しくありません。</p>
+  {% endif %}
+
+  {% if next %}
+    {# ログイン後にリダイレクトされることをユーザーに伝える（任意） #}
+    {% if user.is_authenticated %}
+      <p>すでにログインしています。このアカウントではアクセスできません。</p>
+    {% else %}
+      {# <p>ログインしてください。</p> #}
+    {% endif %}
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}" class="form">
+    {% csrf_token %}
+    <div class="title">Welcome,<br><span>login to continue</span></div>
+    <div class="form-group">
+      <input type="text" name="{{ form.username.name }}" class="input" id="{{ form.username.id_for_label }}" placeholder="ユーザー名">
+      {% if form.username.errors %}
+        <div class="error">{{ form.username.errors }}</div>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <input type="password" name="{{ form.password.name }}" class="input" id="{{ form.password.id_for_label }}" placeholder="パスワード">
+      {% if form.password.errors %}
+        <div class="error">{{ form.password.errors }}</div>
+      {% endif %}
+    </div>
+    
+    <button type="submit" class="button-confirm">Let`s go →</button>
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+
+
+  <p style="margin-top: 1em;">
+    アカウントをお持ちでないですか？ <a href="{% url 'signup' %}">アカウント登録</a>
+  </p>
+  {# パスワードリセットへのリンクなどもここに追加できます #}
+  {# <p><a href="{% url 'password_reset' %}">パスワードを忘れましたか？</a></p> #}
+</div>
+
+{% endblock %}

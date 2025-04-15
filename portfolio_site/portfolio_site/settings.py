@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hello',
     'qrcode_app',
+    'writer_app',
 ]
 
 MIDDLEWARE = [
@@ -139,6 +140,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # プロジェクト直下の 'media' フォルダ
 
+LOGIN_REDIRECT_URL = 'writer_app:index' # ログイン後にリダイレクトするページのURL名
+LOGOUT_REDIRECT_URL = 'hello:page_top'      # ログアウト後にリダイレクトするページのURL名 (例: ログインページ)
 
 
 

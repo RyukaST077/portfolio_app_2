@@ -102,3 +102,12 @@ h2 {
         padding: 2.5rem;
     }
 }
+
+.answer-container {
+    border: 1px solid #000;
+    padding: 20px;
+    ul {
+        margin-left: 20px;
+        list-style: circle;
+    }
+}

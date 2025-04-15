@@ -1,0 +1,23 @@
+{% extends '../base.html' %}
+
+{% block original_style %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h1>AIに聞いてみよう！</h1>
+
+    <a href="{% url 'writer_app:manage_api_key' %}" class="button">APIキーを登録
+        <div class="hoverEffect">
+            <div></div>
+        </div>
+    </a>
+    <a href="{% url 'writer_app:ask_gemini' %}" class="button">AIに質問する
+        <div class="hoverEffect">
+            <div></div>
+        </div>
+    </a>
+</div>
+
+{% endblock %}

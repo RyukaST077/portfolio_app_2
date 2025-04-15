@@ -1,0 +1,82 @@
+{% extends '../writer_app/base_gemini.html' %}
+
+{% block title %}Geminiに質問{% endblock %}
+
+{% block gemini_content %}
+<h2>Geminiに質問する</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {{ message }}
+        {% if message.level == 30 %} {# Warning level #}
+        | <a href="{% url 'writer_app:manage_api_key' %}">APIキーを設定する</a>
+        {% endif %}
+        </li>
+        {% endfor %}
+</ul>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="input-question-container">
+
+        {{ question_form.question }}
+    </div>
+    <br>
+    <button type="submit" class="button">質問する
+        <div class="hoverEffect">
+            <div></div>
+        </div>
+    </button>
+</form>
+<br>
+{% if answer %}
+<div class="answer-container">
+    {{ answer|safe }}  <!-- safe フィルタを追加 -->
+</div>
+{% endif %}
+
+{# messagesフレームワークを使わない場合のエラー表示 #}
+{% if error_message and not messages %}
+<p style="color: red; margin-top: 15px;">エラー: {{ error_message }}</p>
+{% endif %}
+
+<hr style="margin-top: 30px;">
+<a href="{% url 'writer_app:manage_api_key' %}">APIキー設定</a> |
+<form id="logout-form" method="post" action="{% url 'logout' %}" style="display: inline;">
+    {% csrf_token %}
+    {# 見た目をリンクに近づけるためのボタン（CSSで調整可能） #}
+    <button type="submit"
+        style="background:none; border:none; padding:0; color: #007bff; text-decoration: underline; cursor:pointer; font: inherit;">
+        ログアウト
+    </button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // すべてのtextareaとinputフィールドを取得
+        const fields = document.querySelectorAll('.input-question');
+
+        fields.forEach(field => {
+            // 初期状態のチェック
+            checkContent(field);
+
+            // 入力イベントでコンテンツ状態をチェック
+            field.addEventListener('input', function () {
+                checkContent(this);
+            });
+        });
+
+        function checkContent(element) {
+            const container = element.closest('.input-container');
+            if (element.value) {
+                container.classList.add('has-content');
+            } else {
+                container.classList.remove('has-content');
+            }
+        }
+    });
+</script>
+{% endblock %}

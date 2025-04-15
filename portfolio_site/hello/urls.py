@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import index, page_top, page_about, page_contact, page_portfolio
+app_name = 'hello' # 名前空間を設定
 
 urlpatterns = [
     path("", index, name="index"),

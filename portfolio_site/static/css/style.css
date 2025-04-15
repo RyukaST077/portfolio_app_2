@@ -88,4 +88,13 @@ h2 {
 }
 .works .works-text {
   padding: 2.5rem;
+}
+
+.answer-container {
+  border: 1px solid #000;
+  padding: 20px;
+}
+.answer-container ul {
+  margin-left: 20px;
+  list-style: circle;
 }/*# sourceMappingURL=style.css.map */

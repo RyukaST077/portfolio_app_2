@@ -1,0 +1,46 @@
+{# templates/registration/signup.html #}
+{% extends '../base.html' %} {# プロジェクト共通のベーステンプレートを継承 #}
+
+{% block title %}アカウント登録{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post" class="form">
+    {% csrf_token %}
+    <div class="title">Welcome,<br><span>sign up to continue</span></div>
+    
+    <div class="form-group">
+      <input type="text" name="{{ form.username.name }}" class="input" id="{{ form.username.id_for_label }}" placeholder="ユーザー名">
+      {% if form.username.errors %}
+        <div class="error">{{ form.username.errors }}</div>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <input type="password" name="{{ form.password1.name }}" class="input" id="{{ form.password1.id_for_label }}" placeholder="パスワード">
+      {% if form.password1.errors %}
+        <div class="error">{{ form.password1.errors }}</div>
+      {% endif %}
+    </div>
+    
+    <div class="form-group">
+      <input type="password" name="{{ form.password2.name }}" class="input" id="{{ form.password2.id_for_label }}" placeholder="パスワード（確認）">
+      {% if form.password2.errors %}
+        <div class="error">{{ form.password2.errors }}</div>
+      {% endif %}
+    </div>
+    
+    <button type="submit" class="button-confirm">登録する →</button>
+  </form>
+
+  <p style="margin-top: 1em;">すでにアカウントをお持ちですか？ <a href="{% url 'login' %}">ログイン</a></p>
+</div>
+{% endblock %}

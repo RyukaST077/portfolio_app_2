@@ -1,0 +1,417 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    border: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10rem;
+    transition: all 0.02s;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(37, 37, 37);
+
+    z-index: 0;
+    box-shadow: 0 0px 7px -5px rgba(0, 0, 0, 0.5);
+}
+
+.button:hover {
+    background: rgb(193, 228, 248);
+    color: rgb(33, 0, 85);
+    text-decoration: none;
+}
+
+.button:active {
+    transform: scale(0.97);
+}
+
+.hoverEffect {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.hoverEffect div {
+    background: rgb(222, 0, 75);
+    background: linear-gradient(90deg,
+            rgba(222, 0, 75, 1) 0%,
+            rgba(191, 70, 255, 1) 49%,
+            rgba(0, 212, 255, 1) 100%);
+    border-radius: 40rem;
+    width: 10rem;
+    height: 10rem;
+    transition: 0.4s;
+    filter: blur(20px);
+    animation: effect infinite 3s linear;
+    opacity: 0.5;
+}
+
+.button:hover .hoverEffect div {
+    width: 8rem;
+    height: 8rem;
+}
+
+@keyframes effect {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* input のデザイン（APIキー登録画面） */
+
+.input {
+    --icon-size: 28px;
+    position: relative;
+}
+
+.input svg {
+    position: absolute;
+    width: var(--icon-size);
+    top: 50%;
+    left: 1rem;
+    translate: 0 -50%;
+    overflow: visible;
+    color: color-mix(in lch, canvas, canvasText 30%);
+}
+
+.input svg path {
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.input:is(:hover, :focus-within) .svg path {
+    animation: pop 0.5s var(--d);
+}
+
+.input svg path:nth-of-type(1) {
+    --d: 0.24s;
+    --r: 20deg;
+    --s: 1.5;
+}
+
+.input svg path:nth-of-type(2) {
+    --d: 0.12s;
+    --r: 10deg;
+    --s: 1.4;
+}
+
+.input svg path:nth-of-type(3) {
+    --d: 0s;
+    --r: 0deg;
+    --s: 1.25;
+}
+
+@keyframes pop {
+    50% {
+        scale: var(--s, 1);
+        rotate: var(--r, 0deg);
+    }
+}
+
+.search::placeholder {
+    color: color-mix(in lch, canvas, canvasText 30%);
+}
+
+.search {
+    box-shadow:
+        0 20px 25px -5px rgb(0 0 0 / 0.15),
+        0 8px 10px -6px rgb(0 0 0 / 0.25);
+    font-family: inherit;
+    min-width: 300px;
+    padding: 1rem 1rem 1rem calc(1rem + var(--icon-size) + 0.5rem);
+    font-size: 1.025rem;
+    field-sizing: content;
+    background:
+        linear-gradient(canvas, canvas) padding-box,
+        linear-gradient(120deg, hsl(278, 44%, 73%), hsl(35, 81%, 73%)) border-box;
+    border: 4px solid transparent;
+    border-radius: 12px;
+    outline: none;
+    /*   background-clip: padding-box, border-box; */
+}
+
+.bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+}
+
+:where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+}
+
+.bear-link .svg {
+    width: 75%;
+}
+
+/* AIに質問するときのテキストフィールド */
+
+/* 共通スタイル */
+.input-question {
+    width: 100%;
+    max-width: 540px;
+    padding: 12px;
+    font-size: 18px;
+    font-family: "Courier New", monospace;
+    color: #000;
+    background-color: #fff;
+    border: 4px solid #000;
+    border-radius: 0;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 8px 8px 0 #000;
+}
+
+.input-question::placeholder {
+    color: #888;
+}
+
+.input-question:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 #000;
+}
+
+.input-question:focus {
+    background-color: #000;
+    color: #fff;
+    border-color: #ffffff;
+}
+
+.input-question:focus::placeholder {
+    color: #fff;
+}
+
+/* textarea特有のスタイル調整 */
+textarea.input-question {
+    min-height: 100px;
+    /* textareaの最小高さを設定 */
+    resize: vertical;
+    /* 垂直方向のみリサイズ可能 */
+}
+
+/* コンテナ要素 - 必須 */
+.input-question-container {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+    margin-bottom: 20px;
+}
+
+/* フォーカス時のカーソル表示 */
+.input-question-container:focus-within::after {
+    opacity: 1;
+    animation: blink 0.7s step-end infinite;
+    color: #fff;
+}
+
+/* グリッチエフェクト用のクラス（JavaScriptで付与） */
+.input-question-container.has-content .input-question {
+    animation: glitch 1s linear infinite;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* フォーカス時のシェイクアニメーション */
+.input-question-container:focus-within .input-question {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* アニメーション定義 */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px) rotate(-2deg);
+    }
+
+    50% {
+        transform: translateX(5px) rotate(2deg);
+    }
+
+    75% {
+        transform: translateX(-5px) rotate(-2deg);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes glitch {
+    0% {
+        transform: none;
+        opacity: 1;
+    }
+
+    7% {
+        transform: skew(-0.5deg, -0.9deg);
+        opacity: 0.75;
+    }
+
+    10% {
+        transform: none;
+        opacity: 1;
+    }
+
+    30% {
+        transform: skew(0.8deg, -0.1deg);
+        opacity: 0.75;
+    }
+
+    35% {
+        transform: none;
+        opacity: 1;
+    }
+
+    55% {
+        transform: skew(-1deg, 0.2deg);
+        opacity: 0.75;
+    }
+
+    80% {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+/* AIに質問するときのテキストフィールド　終わり */
+
+/* ログインフォームのデザイン */
+.form {
+    --input-focus: #2d8cf0;
+    --font-color: #323232;
+    --font-color-sub: #666;
+    --bg-color: beige;
+    --main-color: black;
+    width: 350px;
+    margin: 0 auto;
+    padding: 20px;
+    background: lightblue;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    box-shadow: 4px 4px var(--main-color);
+}
+
+.title {
+    color: var(--font-color);
+    font-weight: 900;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.title span {
+    color: var(--font-color-sub);
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.input {
+    width: 250px;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    background-color: var(--bg-color);
+    box-shadow: 4px 4px var(--main-color);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--font-color);
+    padding: 5px 10px;
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--font-color-sub);
+    opacity: 0.8;
+}
+
+.input:focus {
+    border: 2px solid var(--input-focus);
+}
+
+.login-with {
+    display: flex;
+    gap: 20px;
+}
+
+.button-log {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 2px solid var(--main-color);
+    background-color: var(--bg-color);
+    box-shadow: 4px 4px var(--main-color);
+    color: var(--font-color);
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--main-color);
+}
+
+.button-log:active,
+.button-confirm:active {
+    box-shadow: 0px 0px var(--main-color);
+    transform: translate(3px, 3px);
+}
+
+.button-confirm {
+    margin: 50px auto 0 auto;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    background-color: var(--bg-color);
+    box-shadow: 4px 4px var(--main-color);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+/* ログインフォームのデザイン　終わり */
