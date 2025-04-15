@@ -51,8 +51,6 @@ def manage_api_key(request):
 
     return render(request, 'writer_app/api_key_form.html', {'form': form})
 
-
-
 @login_required
 def ask_gemini(request):
     profile = get_object_or_404(UserProfile, user=request.user)

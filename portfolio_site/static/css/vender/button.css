@@ -78,7 +78,7 @@
 .input svg {
     position: absolute;
     width: var(--icon-size);
-    top: 50%;
+    bottom: -50%;
     left: 1rem;
     translate: 0 -50%;
     overflow: visible;
