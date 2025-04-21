@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/vender/original_bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/vender/top_gimic.css' %}">
     <link rel="stylesheet" href="{% static 'css/vender/button.css' %}">
+
     {% block original_style %}{% endblock %}
 </head>
 
@@ -26,7 +27,8 @@
             </ul>
         </nav>
     </header>
-    {% block content %}{% endblock %}
+    {% block content %}{% endblock %}    
+
 </body>
 
 </html>
