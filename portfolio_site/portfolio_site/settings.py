@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_uwe_(c1)(krwt&2k=-1iuts09p@$cg7p=k92qbd99wdhhjuv_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '207.148.96.50']
 
 
 # Application definition
@@ -92,7 +92,7 @@ else:
             'USER': 'myprojectuser',
             'PASSWORD': 'password',
             'HOST': 'localhost',
-            'PORT': '', # 通常、空文字列はデフォルトポート(PostgreSQLなら5432)を使用することを意味します
+            'PORT': '',
         }
     }
 
@@ -136,6 +136,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+STATIC_ROOT = '/var/www/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # プロジェクト直下の 'media' フォルダ
