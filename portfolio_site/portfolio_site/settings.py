@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-_uwe_(c1)(krwt&2k=-1iuts09p@$cg7p=k92qbd99wdhhjuv_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '207.148.96.50']
+ALLOWED_HOSTS = ['localhost', '207.148.96.50', 'japankoritsuka.com', 'www.japankoritsuka.com']
 
 
 # Application definition
@@ -140,7 +140,13 @@ STATICFILES_DIRS = [
 STATIC_ROOT = '/var/www/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # プロジェクト直下の 'media' フォルダ
+# 開発環境と本番環境で分ける
+if DEBUG:
+    # 開発環境 - プロジェクト内のmediaディレクトリを使用
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    # 本番環境 - システム設定されたディレクトリ
+    MEDIA_ROOT = '/var/www/media/'
 
 LOGIN_REDIRECT_URL = 'writer_app:index' # ログイン後にリダイレクトするページのURL名
 LOGOUT_REDIRECT_URL = 'hello:page_top'      # ログアウト後にリダイレクトするページのURL名 (例: ログインページ)
