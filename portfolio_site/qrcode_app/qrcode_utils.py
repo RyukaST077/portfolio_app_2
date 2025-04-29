@@ -1,66 +1,74 @@
-# qrcode_app/utils.py や qrcode_app/views.py など、適切な場所に配置
-
 import qrcode
-import uuid
 import os
+import uuid
 import time
-from django.conf import settings
 import logging
+from django.conf import settings
 
-logger = logging.getLogger(__name__) # ロギング設定 (推奨)
+logger = logging.getLogger(__name__)
 
 def generate_qrcode_file(url_data):
     """
-    与えられたデータ (URL) からQRコード画像を生成し、
-    MEDIA_ROOT以下に保存して、その公開URLを返す関数。
-
-    Args:
-        url_data (str): QRコードに変換したいURL文字列。
-
-    Returns:
-        str: 生成されたQRコード画像の公開URL。
-
-    Raises:
-        ValueError: url_dataが空の場合やQRコード生成に失敗した場合。
-        IOError: 画像ファイルの保存に失敗した場合。
+    与えられたURL情報からQRコードを生成して保存する
+    開発環境と本番環境で保存先を自動的に切り替える
     """
-    # 1. 入力データの検証
-    if not url_data:
-        # URLデータが空の場合はエラー
-        raise ValueError("QRコードに変換するURLが指定されていません。")
-
-    # 2. QRコードを生成
-    try:
-        # qrcodeライブラリを使って画像をメモリ上に生成
-        img = qrcode.make(url_data) # 引数 url_data を使用
-    except Exception as e:
-        logger.error(f"QRコード生成中にエラーが発生しました (データ: {url_data}): {e}")
-        # qrcode.makeで失敗する可能性のあるエラーを捕捉
-        raise ValueError(f"QRコードの生成に失敗しました: {e}")
-
-    # 3. 画像ファイルとして保存
-    #    一意なファイル名を生成
-    filename = f"qr_{uuid.uuid4()}_{int(time.time())}.png"
-
-    #    保存先ディレクトリ (例: media/qrcodes/)
-    #    settings.py で MEDIA_ROOT が正しく設定されている前提
-    save_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes') # 'generated_images' から 'qrcodes' に変更 (任意)
-    os.makedirs(save_dir, exist_ok=True) # ディレクトリがなければ作成
-
-    #    保存するファイルのフルパス
+    # 入力検証
+    if not url_data or not isinstance(url_data, str):
+        raise ValueError("QRコード生成には有効なURLが必要です")
+    
+    # QRコードの生成
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url_data)
+    qr.make(fit=True)
+    
+    # PILイメージオブジェクト生成
+    img = qr.make_image(fill_color="black", back_color="white")
+    
+    # 年/月のサブディレクトリ構造
+    from datetime import datetime
+    now = datetime.now()
+    year_month = now.strftime('%Y/%m')
+    
+    # 環境に応じた保存先の決定
+    # 開発環境: settings.py の DEBUG=True のとき、プロジェクト内のmediaディレクトリ
+    # 本番環境: settings.py の DEBUG=False のとき、/var/www/media/ など設定された場所
+    if settings.DEBUG:
+        base_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
+    else:
+        base_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
+    
+    # 保存先ディレクトリ (年月で整理)
+    relative_dir = os.path.join('qrcodes', year_month)
+    save_dir = os.path.join(settings.MEDIA_ROOT, relative_dir)
+    
+    # ディレクトリ作成
+    os.makedirs(save_dir, exist_ok=True)
+    
+    # ファイル名を生成 (一意になるようUUIDとタイムスタンプを使用)
+    filename = f"qr_{uuid.uuid4().hex}_{int(time.time())}.png"
     filepath = os.path.join(save_dir, filename)
-
-    #    画像をファイルに保存
+    
     try:
-        img.save(filepath, 'PNG') # 保存形式を明示 (PNGが一般的)
-        logger.info(f"QRコードを {filepath} として保存しました。") # ログ出力 (開発/デバッグに便利)
+        # 画像を保存
+        img.save(filepath, 'PNG')
+        logger.info(f"QRコードを {filepath} として保存しました。")
     except Exception as e:
         logger.error(f"QRコード画像の保存中にエラーが発生しました (パス: {filepath}): {e}")
-        raise IOError(f"画像の保存に失敗しました: {e}") # 保存失敗はIOErrorなど適切な例外を発生
-
-    # 4. 生成された画像の公開URLを組み立てる
-    #    settings.py で MEDIA_URL が正しく設定されている前提
-    #    例: MEDIA_URL = '/media/'
-    image_url = f"{settings.MEDIA_URL}qrcodes/{filename}" # 保存先ディレクトリ名と合わせる
-
+        # パーミッション情報をログに記録
+        try:
+            parent_dir = os.path.dirname(filepath)
+            logger.error(f"ディレクトリ権限: {os.access(parent_dir, os.W_OK)}")
+        except:
+            pass
+        raise IOError(f"画像の保存に失敗しました: {e}")
+    
+    # メディアURLの構築
+    relative_url = os.path.join(relative_dir, filename).replace('\\', '/')
+    image_url = f"{settings.MEDIA_URL}{relative_url}"
+    
     return image_url

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/vender/original_bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/vender/top_gimic.css' %}">
     <link rel="stylesheet" href="{% static 'css/vender/button.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vender/hamburger.css' %}">
 
     {% block original_style %}{% endblock %}
 </head>
@@ -18,6 +19,7 @@
 <body>
     <header class="header">
         <h1>Portfolio</h1>
+
         <nav class="header-nav">
             <ul>
                 <li><a href="{% url 'hello:page_top' %}">Home</a></li>
@@ -26,8 +28,26 @@
                 <li><a href="{% url 'hello:page_contact' %}">Contact</a></li>
             </ul>
         </nav>
+
+        
+        <nav id="header-nav-sp" class="header-nav-sp">
+            <ul>
+                <li><a href="{% url 'hello:page_top' %}">Home</a></li>
+                <li><a href="{% url 'hello:page_about' %}">About</a></li>
+                <li><a href="{% url 'hello:page_portfolio' %}">Portfolio</a></li>
+                <li><a href="{% url 'hello:page_contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        <div id="humberger" class="humberger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
     </header>
-    {% block content %}{% endblock %}    
+
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/script.js' %}"></script>
 
 </body>
 

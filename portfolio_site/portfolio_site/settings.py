@@ -25,9 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_uwe_(c1)(krwt&2k=-1iuts09p@$cg7p=k92qbd99wdhhjuv_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '207.148.96.50', 'japankoritsuka.com', 'www.japankoritsuka.com']
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '207.148.96.50', 'japankoritsuka.com', 'www.japankoritsuka.com']
 
 
 # Application definition

@@ -31,6 +31,7 @@ h2 {
 
 .header {
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
@@ -45,7 +46,7 @@ h2 {
 }
 .header .header-nav ul li a {
   text-decoration: none;
-  color: black;
+  color: #212529;
 }
 .header .header-nav ul li a :hover {
   text-decoration: underline;
@@ -97,4 +98,100 @@ h2 {
 .answer-container ul {
   margin-left: 20px;
   list-style: circle;
+}
+
+.humberger {
+  z-index: 1;
+  display: none;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+.humberger .bar {
+  margin-bottom: 7px;
+  width: 30px;
+  height: 3px;
+  background-color: #212529;
+  border-radius: 1.5px;
+  transition: all 1s ease-in-out;
+}
+.humberger.active .bar:first-child {
+  transform: rotate(570deg) translate(-11px, -15px);
+}
+.humberger.active .bar:nth-child(2) {
+  transform: rotate(510deg) translate(-2px, -1px);
+}
+.humberger.active .bar:last-child {
+  margin-bottom: 0;
+  transform: rotate(-270deg) translate(-6px, -10px);
+}
+
+.header-nav-sp {
+  display: none;
+}
+.header-nav-sp ul {
+  z-index: 1;
+  position: fixed;
+  padding-top: 10vh;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+  transform: translate(200px, 0);
+}
+.header-nav-sp ul li {
+  margin-bottom: 20px;
+  opacity: 0;
+}
+.header-nav-sp ul li a {
+  color: #212529;
+  text-decoration: none;
+}
+.header-nav-sp.active ul {
+  transform: translate(0, 0);
+}
+.header-nav-sp.active ul li {
+  animation: fadeIn 1s ease forwards;
+}
+.header-nav-sp.active ul li:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.header-nav-sp.active ul li:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.header-nav-sp.active ul li:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.header-nav-sp.active ul li:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media screen and (max-width: 768px) {
+  .humberger {
+    display: block;
+  }
+  .header-nav-sp {
+    display: block;
+  }
+  .header-nav {
+    display: none;
+  }
 }/*# sourceMappingURL=style.css.map */
