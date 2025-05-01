@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_uwe_(c1)(krwt&2k=-1iuts09p@$cg7p=k92qbd99wdhhjuv_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-DEBUG = True
+DEBUG = False
+# DEBUG = True
 
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '207.148.96.50', 'japankoritsuka.com', 'www.japankoritsuka.com']
@@ -159,3 +159,8 @@ LOGOUT_REDIRECT_URL = 'hello:page_top'      # ログアウト後にリダイレ�
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000  # 1年

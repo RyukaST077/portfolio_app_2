@@ -4,6 +4,7 @@ import uuid
 import time
 import logging
 from django.conf import settings
+from urllib.parse import urljoin
 
 logger = logging.getLogger(__name__)
 
@@ -34,16 +35,10 @@ def generate_qrcode_file(url_data):
     now = datetime.now()
     year_month = now.strftime('%Y/%m')
     
-    # 環境に応じた保存先の決定
-    # 開発環境: settings.py の DEBUG=True のとき、プロジェクト内のmediaディレクトリ
-    # 本番環境: settings.py の DEBUG=False のとき、/var/www/media/ など設定された場所
-    if settings.DEBUG:
-        base_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
-    else:
-        base_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
-    
-    # 保存先ディレクトリ (年月で整理)
+    # QRコード保存のサブディレクトリ
     relative_dir = os.path.join('qrcodes', year_month)
+    
+    # 物理的な保存先ディレクトリ
     save_dir = os.path.join(settings.MEDIA_ROOT, relative_dir)
     
     # ディレクトリ作成
@@ -67,8 +62,8 @@ def generate_qrcode_file(url_data):
             pass
         raise IOError(f"画像の保存に失敗しました: {e}")
     
-    # メディアURLの構築
-    relative_url = os.path.join(relative_dir, filename).replace('\\', '/')
-    image_url = f"{settings.MEDIA_URL}{relative_url}"
+    # メディアURLの構築 - スラッシュの正規化
+    relative_url = '/'.join(relative_dir.split(os.sep)) + '/' + filename
     
-    return image_url
+    # 絶対URLを返す
+    return urljoin(settings.MEDIA_URL, relative_url)

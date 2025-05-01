@@ -32,6 +32,7 @@ h2 {
 .header {
   display: flex;
   position: relative;
+  flex-direction: row !important;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
